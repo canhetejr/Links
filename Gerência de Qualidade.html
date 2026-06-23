@@ -1,285 +1,431 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Qualidade EAD — Unicive</title>
+  <title>Gerência de Qualidade — UniCV</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    /* fluid container grows on large screens */
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    /* ── Tokens ── */
+    :root { --ease: cubic-bezier(.4,0,.2,1); }
+
+    [data-theme="dark"] {
+      --bg:           #0a0a0b;
+      --surface:      #18181b;
+      --surface-alt:  #1e1e21;
+      --border:       #27272a;
+      --border-hover: #3f3f46;
+      --text:         #fafafa;
+      --muted:        #a1a1aa;
+      --subtle:       #52525b;
+      --btn-bg:       rgba(255,255,255,.05);
+      --btn-bg-hov:   rgba(255,255,255,.1);
+      --sh-card:      0 1px 3px rgba(0,0,0,.5);
+      --sh-hov-form:  0 12px 32px rgba(96,165,250,.15);
+      --sh-hov-sheet: 0 12px 32px rgba(52,211,153,.12);
+      --sh-hov-doc:   0 12px 32px rgba(251,191,36,.12);
+    }
+
+    [data-theme="light"] {
+      --bg:           #f4f4f5;
+      --surface:      #ffffff;
+      --surface-alt:  #fafafa;
+      --border:       #e4e4e7;
+      --border-hover: #a1a1aa;
+      --text:         #09090b;
+      --muted:        #52525b;
+      --subtle:       #a1a1aa;
+      --btn-bg:       rgba(0,0,0,.04);
+      --btn-bg-hov:   rgba(0,0,0,.08);
+      --sh-card:      0 1px 3px rgba(0,0,0,.08), 0 0 0 1px rgba(0,0,0,.04);
+      --sh-hov-form:  0 12px 32px rgba(96,165,250,.2);
+      --sh-hov-sheet: 0 12px 32px rgba(52,211,153,.16);
+      --sh-hov-doc:   0 12px 32px rgba(251,191,36,.16);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: 'Inter', sans-serif;
-      background: #0a0a0b;
-      color: #e4e4e7;
+      background: var(--bg);
+      color: var(--text);
       min-height: 100vh;
       -webkit-font-smoothing: antialiased;
+      transition: background .3s var(--ease), color .3s var(--ease);
     }
 
+    /* ── Topbar ── */
+    .topbar {
+      position: sticky;
+      top: 0; z-index: 99;
+      height: 52px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(14px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      transition: background .3s var(--ease), border-color .3s var(--ease);
+    }
+
+    .topbar-brand {
+      font-size: .8rem;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: -.2px;
+      transition: color .3s;
+    }
+
+    #theme-btn {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--btn-bg);
+      color: var(--text);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .2s, border-color .2s, transform .25s var(--ease);
+      flex-shrink: 0;
+    }
+    #theme-btn:hover {
+      background: var(--btn-bg-hov);
+      border-color: var(--border-hover);
+      transform: rotate(20deg) scale(1.05);
+    }
+    #theme-btn svg { width: 16px; height: 16px; pointer-events: none; }
+    .i-moon { display: block; }
+    .i-sun  { display: none; }
+    [data-theme="light"] .i-moon { display: none; }
+    [data-theme="light"] .i-sun  { display: block; }
+
+    /* ── Wrapper ── */
     .wrap {
       max-width: 1280px;
       margin: 0 auto;
-      padding: 72px 48px 96px;
+      padding: 60px 48px 96px;
     }
 
-    /* — Header — */
+    /* ── Header ── */
     .header {
       text-align: center;
-      margin-bottom: 48px;
+      margin-bottom: 52px;
+      animation: fadeDown .45s var(--ease) both;
     }
+
+    .logo-img {
+      width: 54px; height: 54px;
+      border-radius: 12px;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto 16px;
+      transition: transform .3s var(--ease);
+    }
+    .logo-img:hover { transform: scale(1.06); }
+
+    .logo-icon {
+      width: 54px; height: 54px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #5bdc9e, #2fc87e);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 16px;
+      box-shadow: 0 0 24px rgba(91,220,158,.25);
+      transition: transform .3s var(--ease);
+    }
+    .logo-icon:hover { transform: scale(1.06); }
+    .logo-icon svg { width: 26px; height: 26px; fill: #042819; }
+
     h1 {
-      font-size: 1.5rem;
+      font-size: 1.6rem;
       font-weight: 600;
-      color: #fafafa;
-      letter-spacing: -.4px;
+      color: var(--text);
+      letter-spacing: -.5px;
       margin-bottom: 6px;
+      transition: color .3s;
     }
     .sub {
       font-size: .875rem;
-      color: #71717a;
+      color: var(--muted);
+      transition: color .3s;
     }
 
-    /* — Card button — */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: 4px;
-      padding: 6px 12px;
-      border-radius: 6px;
-      background: rgba(255,255,255,.05);
-      border: 1px solid #27272a;
-      font-size: .75rem;
-      font-weight: 500;
-      color: #a1a1aa;
-      cursor: pointer;
-      transition: background .15s, border-color .15s, color .15s;
-      width: 100%;
-      justify-content: center;
-    }
-    a.card:hover .btn {
-      background: rgba(255,255,255,.09);
-      border-color: #3f3f46;
-      color: #fafafa;
-    }
-    .btn svg {
-      width: 12px; height: 12px; flex-shrink: 0;
-      transition: transform .2s ease;
-    }
-    a.card:hover .btn svg { transform: translateX(4px); }
-
-    /* — Stagger fade-in — */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    a.card {
-      animation: fadeUp .35s ease both;
-    }
-    a.card:nth-child(1)  { animation-delay: .03s }
-    a.card:nth-child(2)  { animation-delay: .06s }
-    a.card:nth-child(3)  { animation-delay: .09s }
-    a.card:nth-child(4)  { animation-delay: .12s }
-    a.card:nth-child(5)  { animation-delay: .15s }
-    a.card:nth-child(6)  { animation-delay: .18s }
-    a.card:nth-child(7)  { animation-delay: .21s }
-    a.card:nth-child(8)  { animation-delay: .24s }
-    a.card:nth-child(9)  { animation-delay: .27s }
-    a.card:nth-child(10) { animation-delay: .30s }
-    a.card:nth-child(11) { animation-delay: .33s }
-
-    /* — Grid — */
+    /* ── Grid ── */
     .grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
+      gap: 14px;
     }
 
-    /* — Card — */
+    /* ── Cards ── */
     a.card {
       display: flex;
       flex-direction: column;
       gap: 10px;
       padding: 18px;
-      background: #18181b;
-      border: 1px solid #27272a;
-      border-radius: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
       text-decoration: none;
       color: inherit;
-      transition: background .2s, border-color .2s, transform .2s, box-shadow .2s;
-    }
-    a.card:hover {
-      background: #1c1c1f;
-      border-color: #3f3f46;
-      transform: translateY(-3px);
-      box-shadow: 0 12px 32px rgba(0,0,0,.5);
+      box-shadow: var(--sh-card);
+      position: relative;
+      overflow: hidden;
+      transition:
+        background .22s var(--ease),
+        border-color .22s var(--ease),
+        transform .22s var(--ease),
+        box-shadow .22s var(--ease);
+
+      animation: fadeUp .4s var(--ease) both;
     }
 
+    /* Top accent line per type */
+    a.card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 2px;
+      background: var(--accent-color, #5bdc9e);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .28s var(--ease);
+    }
+    a.card:hover::before { transform: scaleX(1); }
+
+    a.card.f { --accent-color: #60a5fa; }
+    a.card.s { --accent-color: #34d399; }
+    a.card.d { --accent-color: #fbbf24; }
+
+    a.card:hover { background: var(--surface-alt); border-color: var(--border-hover); transform: translateY(-4px); }
+    a.card.f:hover { box-shadow: var(--sh-hov-form); }
+    a.card.s:hover { box-shadow: var(--sh-hov-sheet); }
+    a.card.d:hover { box-shadow: var(--sh-hov-doc); }
+
+    /* Stagger */
+    a.card:nth-child(1)  { animation-delay:.04s }
+    a.card:nth-child(2)  { animation-delay:.08s }
+    a.card:nth-child(3)  { animation-delay:.12s }
+    a.card:nth-child(4)  { animation-delay:.16s }
+    a.card:nth-child(5)  { animation-delay:.20s }
+    a.card:nth-child(6)  { animation-delay:.24s }
+    a.card:nth-child(7)  { animation-delay:.28s }
+    a.card:nth-child(8)  { animation-delay:.32s }
+    a.card:nth-child(9)  { animation-delay:.36s }
+    a.card:nth-child(10) { animation-delay:.40s }
+    a.card:nth-child(11) { animation-delay:.44s }
+
+    /* ── Badge ── */
     .badge {
       display: inline-block;
-      font-size: .68rem;
-      font-weight: 600;
-      letter-spacing: .4px;
-      text-transform: uppercase;
-      padding: 2px 8px;
-      border-radius: 4px;
+      font-size: .67rem; font-weight: 600;
+      letter-spacing: .4px; text-transform: uppercase;
+      padding: 2px 8px; border-radius: 4px;
       width: fit-content;
     }
-    .badge-form  { background: rgba(96,165,250,.12); color: #60a5fa; }
-    .badge-sheet { background: rgba(52,211,153,.12);  color: #34d399; }
-    .badge-doc   { background: rgba(251,191,36,.12);  color: #fbbf24; }
+    .bf { background: rgba(96,165,250,.13); color: #60a5fa; }
+    .bs { background: rgba(52,211,153,.13);  color: #34d399; }
+    .bd { background: rgba(251,191,36,.13);  color: #fbbf24; }
+    [data-theme="light"] .bf { background: rgba(96,165,250,.15); }
+    [data-theme="light"] .bs { background: rgba(52,211,153,.15); }
+    [data-theme="light"] .bd { background: rgba(251,191,36,.15); }
 
-    .card-title {
-      font-size: .875rem;
-      font-weight: 500;
-      color: #fafafa;
-      line-height: 1.35;
+    /* ── Card text ── */
+    .ct {
+      font-size: .875rem; font-weight: 500;
+      color: var(--text); line-height: 1.3;
+      transition: color .3s;
     }
-    .card-desc {
-      font-size: .78rem;
-      color: #71717a;
-      line-height: 1.5;
-      flex: 1;
+    .cd {
+      font-size: .78rem; color: var(--muted);
+      line-height: 1.5; flex: 1;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
+      transition: color .3s;
     }
+    .cd strong { color: var(--text); }
 
-    /* — Footer — */
+    /* ── Button ── */
+    .btn {
+      display: inline-flex; align-items: center;
+      justify-content: center; gap: 6px;
+      margin-top: 4px; padding: 7px 12px;
+      border-radius: 7px;
+      background: var(--btn-bg);
+      border: 1px solid var(--border);
+      font-size: .75rem; font-weight: 500;
+      color: var(--muted);
+      width: 100%;
+      transition: background .2s, border-color .2s, color .2s;
+    }
+    .btn svg { width: 12px; height: 12px; flex-shrink: 0; transition: transform .22s var(--ease); }
+    a.card:hover .btn { background: var(--btn-bg-hov); border-color: var(--border-hover); color: var(--text); }
+    a.card:hover .btn svg { transform: translateX(4px); }
+
+    /* ── Footer ── */
     footer {
-      margin-top: 64px;
-      padding-top: 24px;
-      border-top: 1px solid #27272a;
-      font-size: .78rem;
-      color: #52525b;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      text-align: center;
+      margin-top: 72px; padding-top: 24px;
+      border-top: 1px solid var(--border);
+      font-size: .78rem; color: var(--subtle);
+      display: flex; flex-direction: column;
+      align-items: center; gap: 8px; text-align: center;
+      transition: color .3s, border-color .3s;
+      animation: fadeUp .5s .25s var(--ease) both;
     }
-    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
-    footer a { color: #52525b; text-decoration: none; transition: color .15s; }
-    footer a:hover { color: #a1a1aa; }
+    .fl { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+    footer a { color: var(--subtle); text-decoration: none; transition: color .15s; }
+    footer a:hover { color: var(--muted); }
 
-    /* ── Breakpoints ── */
-
-    /* Large desktops (up to 1600px): 4 cols already set, just tighten padding */
-    @media (max-width: 1400px) {
-      .wrap { padding: 64px 36px 80px; }
+    /* ── Animations ── */
+    @keyframes fadeDown {
+      from { opacity:0; transform:translateY(-12px); }
+      to   { opacity:1; transform:translateY(0); }
     }
-
-    /* Small desktops / large tablets: 3 cols */
-    @media (max-width: 1100px) {
-      .grid { grid-template-columns: repeat(3, 1fr); }
-      .wrap { padding: 56px 28px 72px; }
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(12px); }
+      to   { opacity:1; transform:translateY(0); }
     }
 
-    /* Tablets: 2 cols */
-    @media (max-width: 720px) {
-      .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-      .wrap { padding: 40px 20px 60px; }
-      h1 { font-size: 1.25rem; }
+    /* ── Responsive ── */
+    @media (max-width:1400px) { .wrap { padding:56px 36px 80px; } }
+    @media (max-width:1100px) {
+      .grid { grid-template-columns:repeat(3,1fr); }
+      .wrap { padding:48px 28px 72px; }
+      .topbar { padding:0 28px; }
+    }
+    @media (max-width:720px) {
+      .grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .wrap { padding:36px 20px 60px; }
+      .topbar { padding:0 20px; }
+      h1 { font-size:1.3rem; }
+    }
+    @media (max-width:440px) {
+      .grid { grid-template-columns:1fr; }
+      .wrap { padding:28px 16px 52px; }
+      a.card { padding:14px; }
+      h1 { font-size:1.1rem; }
     }
 
-    /* Mobile: 1 col */
-    @media (max-width: 440px) {
-      .grid { grid-template-columns: 1fr; }
-      .wrap { padding: 32px 16px 52px; }
-      h1 { font-size: 1.1rem; }
-      a.card { padding: 14px; }
-    }
+    ::-webkit-scrollbar { width:5px; }
+    ::-webkit-scrollbar-track { background:transparent; }
+    ::-webkit-scrollbar-thumb { background:var(--border); border-radius:99px; }
   </style>
 </head>
 <body>
+
+<!-- Topbar -->
+<div class="topbar">
+  <span class="topbar-brand">Gerência de Qualidade — UniCV</span>
+  <button id="theme-btn" aria-label="Alternar tema" title="Claro / Escuro">
+    <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+    </svg>
+    <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="5"/>
+      <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+      <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+    </svg>
+  </button>
+</div>
+
 <div class="wrap">
 
+  <!-- Header -->
   <div class="header">
-    <img src="logo.svg" alt="Logo Unicive">
-    <h1>Qualidade EAD</h1>
-    <p class="sub">Unicive — links de acesso rápido para a equipe de Qualidade EAD</p>
+    <img
+      src="logo.png"
+      alt="Logo UniCV"
+      class="logo-img"
+      onerror="this.style.display='none'; document.getElementById('logo-icon').style.display='flex';"
+    >
+    <div class="logo-icon" id="logo-icon" style="display:none">
+      <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+    </div>
+    <h1>Gerência de Qualidade</h1>
+    <p class="sub">UniCV · Qualidade EAD · Fábrica de Conteúdos</p>
   </div>
 
+  <!-- Grid -->
   <div class="grid">
 
-    <a class="card" href="https://runrun.it/share/form/UvMCXlqWgT1iRnIw" target="_blank" rel="noopener">
-      <span class="badge badge-form">Formulário</span>
-      <p class="card-title">Substituição UAs</p>
-      <p class="card-desc">Substituição de Unidades de Aprendizagem no Moodle pela coordenação.</p>
+    <a class="card f" href="https://runrun.it/share/form/UvMCXlqWgT1iRnIw" target="_blank" rel="noopener">
+      <span class="badge bf">Formulário</span>
+      <p class="ct">Substituição UAs</p>
+      <p class="cd">Substituição de Unidades de Aprendizagem no Moodle pela coordenação.</p>
       <span class="btn">Abrir formulário <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
     </a>
 
-    <a class="card" href="https://runrun.it/share/form/0Vyzsths413RiZTF" target="_blank" rel="noopener">
-      <span class="badge badge-form">Formulário</span>
-      <p class="card-title">Produção de Disciplina</p>
-      <p class="card-desc"><strong>Após</strong> a liberação do orçamento e dentro do calendário.</p>
+    <a class="card f" href="https://runrun.it/share/form/0Vyzsths413RiZTF" target="_blank" rel="noopener">
+      <span class="badge bf">Formulário</span>
+      <p class="ct">Produção de Disciplina</p>
+      <p class="cd"><strong>Após</strong> a liberação do orçamento e dentro do calendário.</p>
       <span class="btn">Abrir formulário <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
     </a>
 
-    <a class="card" href="https://runrun.it/share/form/S6bYgNSSg16I5kpz" target="_blank" rel="noopener">
-      <span class="badge badge-form">Formulário</span>
-      <p class="card-title">Revisão de Conteúdo</p>
-      <p class="card-desc">Correção de material de disciplinas com professor já contratado.</p>
+    <a class="card f" href="https://runrun.it/share/form/S6bYgNSSg16I5kpz" target="_blank" rel="noopener">
+      <span class="badge bf">Formulário</span>
+      <p class="ct">Revisão de Conteúdo</p>
+      <p class="cd">Correção de material de disciplinas com professor já contratado.</p>
       <span class="btn">Abrir formulário <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
     </a>
 
-    <a class="card" href="https://runrun.it/share/form/FIbqNz6nEiJIp_tn" target="_blank" rel="noopener">
-      <span class="badge badge-form">Formulário</span>
-      <p class="card-title">Laboratórios Algetec</p>
-      <p class="card-desc">Inserção de laboratórios virtuais ou credenciais de acesso ao catálogo.</p>
+    <a class="card f" href="https://runrun.it/share/form/FIbqNz6nEiJIp_tn" target="_blank" rel="noopener">
+      <span class="badge bf">Formulário</span>
+      <p class="ct">Laboratórios Algetec</p>
+      <p class="cd">Inserção de laboratórios virtuais ou credenciais de acesso ao catálogo.</p>
       <span class="btn">Abrir formulário <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
     </a>
 
-    <a class="card" href="https://runrun.it/share/form/7E9oxLa6huRSuppD" target="_blank" rel="noopener">
-      <span class="badge badge-form">Formulário</span>
-      <p class="card-title">Transposição de Disciplina</p>
-      <p class="card-desc">Cópia ou realocação de estruturas de turmas anteriores no Moodle.</p>
+    <a class="card f" href="https://runrun.it/share/form/7E9oxLa6huRSuppD" target="_blank" rel="noopener">
+      <span class="badge bf">Formulário</span>
+      <p class="ct">Transposição de Disciplina</p>
+      <p class="cd">Cópia ou realocação de estruturas de turmas anteriores no Moodle.</p>
       <span class="btn">Abrir formulário <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
     </a>
 
-    <a class="card" href="https://runrun.it/share/form/qeu8bL6aFPXRz3Ip" target="_blank" rel="noopener">
-      <span class="badge badge-form">Formulário</span>
-      <p class="card-title">Alteração no Ensalamento</p>
-      <p class="card-desc">Solicitação de alteração no ensalamento de disciplinas e turmas.</p>
+    <a class="card f" href="https://runrun.it/share/form/qeu8bL6aFPXRz3Ip" target="_blank" rel="noopener">
+      <span class="badge bf">Formulário</span>
+      <p class="ct">Alteração no Ensalamento</p>
+      <p class="cd">Solicitação de alteração no ensalamento de disciplinas e turmas.</p>
       <span class="btn">Abrir formulário <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
     </a>
 
-    <a class="card" href="https://runrun.it/share/form/XY16iflMIi8t0_rU" target="_blank" rel="noopener">
-      <span class="badge badge-form">Formulário</span>
-      <p class="card-title">Intercorrência na Disciplina</p>
-      <p class="card-desc">Canal emergencial para reportar falhas em ambientes virtuais.</p>
+    <a class="card f" href="https://runrun.it/share/form/XY16iflMIi8t0_rU" target="_blank" rel="noopener">
+      <span class="badge bf">Formulário</span>
+      <p class="ct">Intercorrência na Disciplina</p>
+      <p class="cd">Canal emergencial para reportar falhas em ambientes virtuais.</p>
       <span class="btn">Abrir formulário <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
     </a>
 
-    <a class="card" href="https://docs.google.com/spreadsheets/d/101m5s-qMh2T-IgPeoS_BeTkS9Az1cNNQ4LvA1fuymQo/edit?gid=1886870602" target="_blank" rel="noopener">
-      <span class="badge badge-sheet">Planilha</span>
-      <p class="card-title">Matriz Total</p>
-      <p class="card-desc">Cursos por abas com status de produção e pendências.</p>
+    <a class="card s" href="https://docs.google.com/spreadsheets/d/101m5s-qMh2T-IgPeoS_BeTkS9Az1cNNQ4LvA1fuymQo/edit?gid=1886870602" target="_blank" rel="noopener">
+      <span class="badge bs">Planilha</span>
+      <p class="ct">Matriz Total</p>
+      <p class="cd">Cursos por abas com status de produção e pendências.</p>
       <span class="btn">Ver planilha <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
     </a>
 
-    <a class="card" href="https://docs.google.com/spreadsheets/d/1RUAUDkiFKtbMwJzZFsLuruGt8J5fYvOsbNyUq6jo9Ig/edit?gid=1143043374" target="_blank" rel="noopener">
-      <span class="badge badge-sheet">Planilha</span>
-      <p class="card-title">Fornecedores</p>
-      <p class="card-desc">Fornecedores cadastrados para confecção de materiais acadêmicos.</p>
+    <a class="card s" href="https://docs.google.com/spreadsheets/d/1RUAUDkiFKtbMwJzZFsLuruGt8J5fYvOsbNyUq6jo9Ig/edit?gid=1143043374" target="_blank" rel="noopener">
+      <span class="badge bs">Planilha</span>
+      <p class="ct">Fornecedores</p>
+      <p class="cd">Fornecedores cadastrados para confecção de materiais acadêmicos.</p>
       <span class="btn">Ver planilha <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
     </a>
 
-    <a class="card" href="https://docs.google.com/spreadsheets/d/1ospp6e2L02UHIhVf69Wh7M__BaYWE_qShFGlPBnE34o/edit?gid=12991798" target="_blank" rel="noopener">
-      <span class="badge badge-sheet">Planilha</span>
-      <p class="card-title">Identificar Produção</p>
-      <p class="card-desc">Verifique se a disciplina já foi entregue pela equipe.</p>
+    <a class="card s" href="https://docs.google.com/spreadsheets/d/1ospp6e2L02UHIhVf69Wh7M__BaYWE_qShFGlPBnE34o/edit?gid=12991798" target="_blank" rel="noopener">
+      <span class="badge bs">Planilha</span>
+      <p class="ct">Identificar Produção</p>
+      <p class="cd">Verifique se a disciplina já foi entregue pela equipe.</p>
       <span class="btn">Ver planilha <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
     </a>
 
-    <a class="card" href="https://docs.google.com/document/d/1w126FSK_g724o0vfdFe8SNcCQPbvOquythyNoyGgrNc/edit?tab=t.0" target="_blank" rel="noopener">
-      <span class="badge badge-doc">Documento</span>
-      <p class="card-title">Termo de Imagem e Voz</p>
-      <p class="card-desc">Baixe antes de preencher — não edite online.</p>
+    <a class="card d" href="https://docs.google.com/document/d/1w126FSK_g724o0vfdFe8SNcCQPbvOquythyNoyGgrNc/edit?tab=t.0" target="_blank" rel="noopener">
+      <span class="badge bd">Documento</span>
+      <p class="ct">Termo de Imagem e Voz</p>
+      <p class="cd">Baixe antes de preencher — não edite online.</p>
       <span class="btn">Baixar documento <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
     </a>
 
@@ -287,12 +433,29 @@
 
   <footer>
     <span>Gerência de Qualidade — UniCV</span>
-    <div class="footer-links">
+    <div class="fl">
       <a href="mailto:fabricadeconteudos@unicv.edu.br">fabricadeconteudos@unicv.edu.br</a>
       <span>(44) 99866-1211</span>
     </div>
   </footer>
 
 </div>
+
+<script>
+  const btn  = document.getElementById('theme-btn');
+  const root = document.documentElement;
+  const KEY  = 'qge-theme';
+
+  // Restore saved preference
+  const saved = localStorage.getItem(KEY);
+  if (saved) root.dataset.theme = saved;
+
+  btn.addEventListener('click', () => {
+    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    localStorage.setItem(KEY, next);
+  });
+</script>
+
 </body>
 </html>
