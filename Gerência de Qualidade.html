@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Qualidade EAD — Unicive</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* fluid container grows on large screens */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a0a0b;
+      color: #e4e4e7;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrap {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 72px 48px 96px;
+    }
+
+    /* — Header — */
+    .header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #fafafa;
+      letter-spacing: -.4px;
+      margin-bottom: 6px;
+    }
+    .sub {
+      font-size: .875rem;
+      color: #71717a;
+    }
+
+    /* — Card button — */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 4px;
+      padding: 6px 12px;
+      border-radius: 6px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid #27272a;
+      font-size: .75rem;
+      font-weight: 500;
+      color: #a1a1aa;
+      cursor: pointer;
+      transition: background .15s, border-color .15s, color .15s;
+      width: 100%;
+      justify-content: center;
+    }
+    a.card:hover .btn {
+      background: rgba(255,255,255,.09);
+      border-color: #3f3f46;
+      color: #fafafa;
+    }
+    .btn svg {
+      width: 12px; height: 12px; flex-shrink: 0;
+      transition: transform .2s ease;
+    }
+    a.card:hover .btn svg { transform: translateX(4px); }
+
+    /* — Stagger fade-in — */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    a.card {
+      animation: fadeUp .35s ease both;
+    }
+    a.card:nth-child(1)  { animation-delay: .03s }
+    a.card:nth-child(2)  { animation-delay: .06s }
+    a.card:nth-child(3)  { animation-delay: .09s }
+    a.card:nth-child(4)  { animation-delay: .12s }
+    a.card:nth-child(5)  { animation-delay: .15s }
+    a.card:nth-child(6)  { animation-delay: .18s }
+    a.card:nth-child(7)  { animation-delay: .21s }
+    a.card:nth-child(8)  { animation-delay: .24s }
+    a.card:nth-child(9)  { animation-delay: .27s }
+    a.card:nth-child(10) { animation-delay: .30s }
+    a.card:nth-child(11) { animation-delay: .33s }
+
+    /* — Grid — */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    /* — Card — */
+    a.card {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 18px;
+      background: #18181b;
+      border: 1px solid #27272a;
+      border-radius: 10px;
+      text-decoration: none;
+      color: inherit;
+      transition: background .2s, border-color .2s, transform .2s, box-shadow .2s;
+    }
+    a.card:hover {
+      background: #1c1c1f;
+      border-color: #3f3f46;
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(0,0,0,.5);
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: .68rem;
+      font-weight: 600;
+      letter-spacing: .4px;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 4px;
+      width: fit-content;
+    }
+    .badge-form  { background: rgba(96,165,250,.12); color: #60a5fa; }
+    .badge-sheet { background: rgba(52,211,153,.12);  color: #34d399; }
+    .badge-doc   { background: rgba(251,191,36,.12);  color: #fbbf24; }
+
+    .card-title {
+      font-size: .875rem;
+      font-weight: 500;
+      color: #fafafa;
+      line-height: 1.35;
+    }
+    .card-desc {
+      font-size: .78rem;
+      color: #71717a;
+      line-height: 1.5;
+      flex: 1;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* — Footer — */
+    footer {
+      margin-top: 64px;
+      padding-top: 24px;
+      border-top: 1px solid #27272a;
+      font-size: .78rem;
+      color: #52525b;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      text-align: center;
+    }
+    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+    footer a { color: #52525b; text-decoration: none; transition: color .15s; }
+    footer a:hover { color: #a1a1aa; }
+
+    /* ── Breakpoints ── */
+
+    /* Large desktops (up to 1600px): 4 cols already set, just tighten padding */
+    @media (max-width: 1400px) {
+      .wrap { padding: 64px 36px 80px; }
+    }
+
+    /* Small desktops / large tablets: 3 cols */
+    @media (max-width: 1100px) {
+      .grid { grid-template-columns: repeat(3, 1fr); }
+      .wrap { padding: 56px 28px 72px; }
+    }
+
+    /* Tablets: 2 cols */
+    @media (max-width: 720px) {
+      .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .wrap { padding: 40px 20px 60px; }
+      h1 { font-size: 1.25rem; }
+    }
+
+    /* Mobile: 1 col */
+    @media (max-width: 440px) {
+      .grid { grid-template-columns: 1fr; }
+      .wrap { padding: 32px 16px 52px; }
+      h1 { font-size: 1.1rem; }
+      a.card { padding: 14px; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <img src="logo.svg" alt="Logo Unicive">
+    <h1>Qualidade EAD</h1>
+    <p class="sub">Unicive — links de acesso rápido para a equipe de Qualidade EAD</p>
+  </div>
+
+  <div class="grid">
+
+    <a class="card" href="https://runrun.it/share/form/UvMCXlqWgT1iRnIw" target="_blank" rel="noopener">
+      <span class="badge badge-form">Formulário</span>
+      <p class="card-title">Substituição UAs</p>
+      <p class="card-desc">Substituição de Unidades de Aprendizagem no Moodle pela coordenação.</p>
+      <span class="btn">Abrir formulário <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+    </a>
+
+    <a class="card" href="https://runrun.it/share/form/0Vyzsths413RiZTF" target="_blank" rel="noopener">
+      <span class="badge badge-form">Formulário</span>
+      <p class="card-title">Produção de Disciplina</p>
+      <p class="card-desc"><strong>Após</strong> a liberação do orçamento e dentro do calendário.</p>
+      <span class="btn">Abrir formulário <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+    </a>
+
+    <a class="card" href="https://runrun.it/share/form/S6bYgNSSg16I5kpz" target="_blank" rel="noopener">
+      <span class="badge badge-form">Formulário</span>
+      <p class="card-title">Revisão de Conteúdo</p>
+      <p class="card-desc">Correção de material de disciplinas com professor já contratado.</p>
+      <span class="btn">Abrir formulário <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+    </a>
+
+    <a class="card" href="https://runrun.it/share/form/FIbqNz6nEiJIp_tn" target="_blank" rel="noopener">
+      <span class="badge badge-form">Formulário</span>
+      <p class="card-title">Laboratórios Algetec</p>
+      <p class="card-desc">Inserção de laboratórios virtuais ou credenciais de acesso ao catálogo.</p>
+      <span class="btn">Abrir formulário <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+    </a>
+
+    <a class="card" href="https://runrun.it/share/form/7E9oxLa6huRSuppD" target="_blank" rel="noopener">
+      <span class="badge badge-form">Formulário</span>
+      <p class="card-title">Transposição de Disciplina</p>
+      <p class="card-desc">Cópia ou realocação de estruturas de turmas anteriores no Moodle.</p>
+      <span class="btn">Abrir formulário <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+    </a>
+
+    <a class="card" href="https://runrun.it/share/form/qeu8bL6aFPXRz3Ip" target="_blank" rel="noopener">
+      <span class="badge badge-form">Formulário</span>
+      <p class="card-title">Alteração no Ensalamento</p>
+      <p class="card-desc">Solicitação de alteração no ensalamento de disciplinas e turmas.</p>
+      <span class="btn">Abrir formulário <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+    </a>
+
+    <a class="card" href="https://runrun.it/share/form/XY16iflMIi8t0_rU" target="_blank" rel="noopener">
+      <span class="badge badge-form">Formulário</span>
+      <p class="card-title">Intercorrência na Disciplina</p>
+      <p class="card-desc">Canal emergencial para reportar falhas em ambientes virtuais.</p>
+      <span class="btn">Abrir formulário <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+    </a>
+
+    <a class="card" href="https://docs.google.com/spreadsheets/d/101m5s-qMh2T-IgPeoS_BeTkS9Az1cNNQ4LvA1fuymQo/edit?gid=1886870602" target="_blank" rel="noopener">
+      <span class="badge badge-sheet">Planilha</span>
+      <p class="card-title">Matriz Total</p>
+      <p class="card-desc">Cursos por abas com status de produção e pendências.</p>
+      <span class="btn">Ver planilha <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+    </a>
+
+    <a class="card" href="https://docs.google.com/spreadsheets/d/1RUAUDkiFKtbMwJzZFsLuruGt8J5fYvOsbNyUq6jo9Ig/edit?gid=1143043374" target="_blank" rel="noopener">
+      <span class="badge badge-sheet">Planilha</span>
+      <p class="card-title">Fornecedores</p>
+      <p class="card-desc">Fornecedores cadastrados para confecção de materiais acadêmicos.</p>
+      <span class="btn">Ver planilha <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+    </a>
+
+    <a class="card" href="https://docs.google.com/spreadsheets/d/1ospp6e2L02UHIhVf69Wh7M__BaYWE_qShFGlPBnE34o/edit?gid=12991798" target="_blank" rel="noopener">
+      <span class="badge badge-sheet">Planilha</span>
+      <p class="card-title">Identificar Produção</p>
+      <p class="card-desc">Verifique se a disciplina já foi entregue pela equipe.</p>
+      <span class="btn">Ver planilha <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+    </a>
+
+    <a class="card" href="https://docs.google.com/document/d/1w126FSK_g724o0vfdFe8SNcCQPbvOquythyNoyGgrNc/edit?tab=t.0" target="_blank" rel="noopener">
+      <span class="badge badge-doc">Documento</span>
+      <p class="card-title">Termo de Imagem e Voz</p>
+      <p class="card-desc">Baixe antes de preencher — não edite online.</p>
+      <span class="btn">Baixar documento <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+    </a>
+
+  </div>
+
+  <footer>
+    <span>Gerência de Qualidade — UniCV</span>
+    <div class="footer-links">
+      <a href="mailto:fabricadeconteudos@unicv.edu.br">fabricadeconteudos@unicv.edu.br</a>
+      <span>(44) 99866-1211</span>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
